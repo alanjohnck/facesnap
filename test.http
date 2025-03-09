@@ -1,0 +1,110 @@
+### Login as College Admin
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "advaith@student.com",
+    "password": "1"
+}
+
+### Login as Teacher
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "teacher@evergreen.edu",
+    "password": "teacher123"
+}
+
+### Login as Student
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "student@evergreen.edu",
+    "password": "student123"
+}
+
+### Student Signup
+POST http://localhost:3000/auth/signup/student
+Content-Type: application/json
+
+{
+    "name": "advaith",
+    "email": "advaith@student.com",
+    "password": "1",
+    "collegeId": "e2608311-9d46-4762-b49f-f383f68d4135"
+}
+
+### Teacher Signup
+POST http://localhost:3000/auth/signup/teacher
+Content-Type: application/json
+
+{
+    "name": "manju kj ",
+    "email": "manjukj@teacher.com",
+    "password": "12345",
+    "collegeId": "e2608311-9d46-4762-b49f-f383f68d4135",
+    "subject": "java"
+}
+
+### College Admin Signup
+POST http://localhost:3000/auth/signup/college-admin
+Content-Type: application/json
+
+{
+    "name": "adminmec",
+    "email": "adminmec@admin.com",
+    "password": "admin1234",
+    "collegeName": "mec",
+    "collegeCode": "MDL",
+    "collegeAddress": "Ernakulam, Science City"
+}
+
+### Get Notifications (Requires Authentication)
+GET http://localhost:3000/auth/notifications
+Authorization: Bearer your_token_here
+Content-Type: application/json
+
+### Get Dashboard Data (Requires Authentication)
+GET http://localhost:3000/auth/dashboard
+Authorization: Bearer your_token_here
+Content-Type: application/json
+
+### Approve Student (Requires Teacher Authentication)
+POST http://localhost:3000/auth/approve/student
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI4OWFiMmY0LTJkY2QtNDgyNS1iODE4LWU2ODRlMjA4Y2RlNCIsInJvbGUiOiJURUFDSEVSIiwiY29sbGVnZUlkIjoiZTI2MDgzMTEtOWQ0Ni00NzYyLWI0OWYtZjM4M2Y2OGQ0MTM1IiwiaWF0IjoxNzQxNDE3NDMxLCJleHAiOjE3NDE1MDM4MzF9.EGOKuMoLN0uqrA7QNnghBLenuY29jLXzgCjrn7y3Joo
+Content-Type: application/json
+
+{
+    "studentId": "6da25e3a-66c3-4dde-8039-7fb061650d9c"
+}
+
+### Approve Teacher (Requires College Admin Authentication)
+POST http://localhost:3000/auth/approve/teacher
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM4MzQ2ZWIzLTlmZTQtNDlmMi05MWYzLTdlZTEwMmY2NDdlMiIsInJvbGUiOiJDT0xMRUdFX0FETUlOIiwiY29sbGVnZUlkIjoiZTI2MDgzMTEtOWQ0Ni00NzYyLWI0OWYtZjM4M2Y2OGQ0MTM1IiwiaWF0IjoxNzQxNDE2ODA0LCJleHAiOjE3NDE1MDMyMDR9.Q3FYJWUo2SOI7vcdCwudBnP3B8SVyDODfvyTLQgWhjU
+Content-Type: application/json
+
+{
+    "teacherId": "b89ab2f4-2dcd-4825-b818-e684e208cde4"
+}
+
+### Verify College (Requires System Admin Authentication)
+POST http://localhost:3000/auth/verify-college
+Authorization: Bearer system_admin_token_here
+Content-Type: application/json
+
+{
+    "collegeId": "college_id_here"
+}
+
+### Record Attendance (Requires Teacher Authentication)
+POST http://localhost:3000/auth/record-attendance
+Authorization: Bearer teacher_token_here
+Content-Type: application/json
+
+{
+    "studentId": "student_user_id_here",
+    "courseId": "course_id_here",
+    "status": "PRESENT"
+}

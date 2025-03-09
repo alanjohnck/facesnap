@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id                  String             @id @default(uuid())
+  email               String             @unique
+  password            String
+  name                String
+  role                Role
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  studentProfile      StudentProfile?
+  teacherProfile      TeacherProfile?
+  collegeAdminProfile CollegeAdminProfile?
+  notifications       Notification[]
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  COLLEGE_ADMIN
+  SYSTEM_ADMIN
+}
+
+model College {
+  id              String               @id @default(uuid())
+  name            String               @unique
+  code            String               @unique
+  address         String
+  isVerified      Boolean              @default(false)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  students        StudentProfile[]
+  teachers        TeacherProfile[]
+  collegeAdmins   CollegeAdminProfile[]
+  courses         Course[]
+}
+
+model StudentProfile {
+  id          String       @id @default(uuid())
+  userId      String       @unique
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId   String
+  college     College      @relation(fields: [collegeId], references: [id])
+  isApproved  Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attendance  Attendance[]
+}
+
+model TeacherProfile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId   String
+  college     College   @relation(fields: [collegeId], references: [id])
+  subject     String
+  isApproved  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  courses     Course[]
+}
+
+model CollegeAdminProfile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collegeId   String
+  college     College   @relation(fields: [collegeId], references: [id])
+  isApproved  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  name        String
+  code        String
+  teacherId   String
+  teacher     TeacherProfile @relation(fields: [teacherId], references: [id])
+  collegeId   String
+  college     College      @relation(fields: [collegeId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attendance  Attendance[]
+
+  @@unique([code, collegeId])
+}
+
+model Attendance {
+  id          String         @id @default(uuid())
+  studentId   String
+  student     StudentProfile @relation(fields: [studentId], references: [id])
+  courseId    String
+  course      Course         @relation(fields: [courseId], references: [id])
+  date        DateTime
+  status      AttendanceStatus
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([studentId, courseId, date])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message     String
+  type        String
+  metadata    Json?     // For storing additional data like studentId, teacherId, etc.
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
