@@ -12,8 +12,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "teacher@evergreen.edu",
-    "password": "teacher123"
+    "email": "veena@gmail.com",
+    "password": "veena"
 }
 
 ### Login as Student
@@ -41,9 +41,9 @@ POST http://localhost:3000/auth/signup/teacher
 Content-Type: application/json
 
 {
-    "name": "manju kj ",
-    "email": "manjukj@teacher.com",
-    "password": "12345",
+    "name": "manju kjh ",
+    "email": "manjukjh@teacher.com",
+    "password": "12345v",
     "collegeId": "e2608311-9d46-4762-b49f-f383f68d4135",
     "subject": "java"
 }

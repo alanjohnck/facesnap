@@ -126,6 +126,19 @@ const studentSignup = async (req, res) => {
     }
 };
 
+const getCollageDetails = async(req,res)=>{
+
+    try{
+    const collegeDetails = await prisma.college.findMany({
+        where: {
+            isVerified: true
+        }
+    });
+    res.json(collegeDetails);
+    }catch(e){
+        res.status(400).json({ message: "Error fetching college details", error: error.message });
+    }
+}
 // Teacher signup
 const teacherSignup = async (req, res) => {
     const { name, email, password, collegeId, subject } = req.body;
@@ -428,19 +441,7 @@ const verifyCollege = async (req, res) => {
     }
 };
 
-const getCollageDetails = async(req,res)=>{
-    try{
-        const college = await prisma.college.findMany({
-            where:{
-                
-            }
-        });
-        console.log(college);
-        res.json(college);
-    }catch(error){
-        res.status(400).json({ message: "Error fetching college", error: error.message });
-    }
-}
+
 
 // Get notifications
 const getNotifications = async (req, res) => {

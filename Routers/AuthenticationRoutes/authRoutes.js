@@ -7,11 +7,15 @@ const  authController= require("../../Controllers/AuthControllers/authController
 
 const { authenticate } = require('../../Middleware/AuthenticateJWT');
 
+//getRouters
+router.get('/getCollageDetails',authController.getCollageDetails);
+
 // Auth routes
 router.post('/login', authController.login);
 router.post('/signup/student', authController.studentSignup);
 router.post('/signup/teacher', authController.teacherSignup);
 router.post('/signup/college-admin', authController.collegeAdminSignup);
+
 
 // Approval routes (require authentication)
 router.post('/approve/student', authenticate, authController.approveStudent);
